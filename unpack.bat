@@ -1,5 +1,5 @@
 @echo off
-
+setlocal ENABLEDELAYEDEXPANSION
 set TYPE=%1
 echo === Wwise_Unpacker v1.3 ===
 echo.
@@ -14,7 +14,14 @@ rem ================= Methods
   mkdir dest_wav > nul 2>&1
   
   echo ---- Running 'quickbms': Extract raw files
-  for %%a in ("Game_Files\*.pck") do (Tools\quickbms.exe -q -k Tools\wwise_pck_extractor.bms "%%a" "dest_raw")
+  for %%a in ("Game_Files\*.pck") do (
+    Tools\quickbms.exe -q -k Tools\wwise_pck_extractor.bms "%%a" "dest_raw"
+    set/a fileNum = 0
+    for %%b in ("dest_raw\*.wem") do (
+      ren "%%b" "%%~na_!fileNum!.wem"
+      set/a fileNum += 1
+    )
+  )
   echo.
   
   echo ---- Running 'bnkextr'
