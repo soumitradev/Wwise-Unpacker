@@ -10,6 +10,8 @@ goto:start
 
 rem ================= Methods
 :UNPACK_WAV
+  rd /s /q dest_raw
+  rd /s /q dest_wav
   mkdir dest_raw > nul 2>&1
   mkdir dest_wav > nul 2>&1
   
@@ -36,6 +38,7 @@ goto:eof
     call :UNPACK_WAV
   )
   
+  rd /s /q dest_mp3
   mkdir dest_mp3 > nul 2>&1
   
   echo ---- Running 'ffmpeg': Convert to mp3
